@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/BookController")
 public class BookController {
@@ -23,16 +25,9 @@ public class BookController {
 
         Page<Book> bookPage = service.getAllBooks(page, pageSize);
 
-        int totalPages = bookPage.getTotalPages();
-
-        int startPage = Math.max(0, page - 4);
-        int endPage = Math.min(totalPages - 1, page + 4);
-
         model.addAttribute("books", bookPage.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", bookPage.getTotalPages());
 
         return "getAllBooks";
     }
