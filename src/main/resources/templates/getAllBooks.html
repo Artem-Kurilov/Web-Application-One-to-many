@@ -67,36 +67,83 @@
         </tbody>
     </table>
 
+    <!-- Pagination -->
     <nav class="mt-4" th:if="${totalPages > 1}">
         <ul class="pagination justify-content-center">
 
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <!-- PREVIOUS -->
+            <li class="page-item"
+                th:classappend="${currentPage == 0} ? 'disabled'">
+
                 <a class="page-link"
                    th:href="@{/BookController/ListOfBooks(page=${currentPage - 1})}">
                     &lt;
                 </a>
+
             </li>
 
+            <!-- IF TOTAL PAGES <= 10 -->
+            <th:block th:if="${totalPages <= 10}">
+
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+
+                    <a class="page-link"
+                       th:text="${i + 1}"
+                       th:href="@{/BookController/ListOfBooks(page=${i})}">
+                    </a>
+
+                </li>
+
+            </th:block>
+
+            <!-- IF TOTAL PAGES > 10 -->
+            <th:block th:if="${totalPages > 10}">
+
+                <!-- DYNAMIC LEFT WINDOW -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(
+                    currentPage < 5 ? 0 : currentPage,
+                    currentPage < 5 ? 4 : currentPage + 4)}"
+                    th:if="${i < totalPages - 5}"
+                    th:classappend="${i == currentPage} ? 'active'">
+
+                    <a class="page-link"
+                       th:text="${i + 1}"
+                       th:href="@{/BookController/ListOfBooks(page=${i})}">
+                    </a>
+
+                </li>
+
+                <!-- DOTS -->
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- LAST 5 -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+
+                    <a class="page-link"
+                       th:text="${i + 1}"
+                       th:href="@{/BookController/ListOfBooks(page=${i})}">
+                    </a>
+
+                </li>
+
+            </th:block>
+
+            <!-- NEXT -->
             <li class="page-item"
-                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                th:if="${totalPages <= 10 or i < 5 or i >= totalPages - 5}"
-                th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link"
-                   th:text="${i + 1}"
-                   th:href="@{/BookController/ListOfBooks(page=${i})}">
-                </a>
-            </li>
+                th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
 
-            <li class="page-item disabled"
-                th:if="${totalPages > 10 and currentPage < totalPages - 5 and currentPage >= 5}">
-                <span class="page-link">...</span>
-            </li>
-
-            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{/BookController/ListOfBooks(page=${currentPage + 1})}">
                     &gt;
                 </a>
+
             </li>
 
         </ul>
