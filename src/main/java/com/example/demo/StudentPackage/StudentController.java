@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/StudentController")
 public class StudentController {
@@ -24,18 +26,17 @@ public class StudentController {
 
         int pageSize = 15;
 
-        Page<Student> studentPage = service.getAllStudents(page, pageSize);
+        Page<Student> studentPage =
+                service.getAllStudents(page, pageSize);
 
-        int totalPages = studentPage.getTotalPages();
+        model.addAttribute("students",
+                studentPage.getContent());
 
-        int startPage = Math.max(0, page - 4);
-        int endPage = Math.min(totalPages - 1, page + 4);
+        model.addAttribute("currentPage",
+                page);
 
-        model.addAttribute("students", studentPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages",
+                studentPage.getTotalPages());
 
         return "getAll";
     }
@@ -56,10 +57,9 @@ public class StudentController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable("id") Long id,
-                                @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String deleteStudent(@PathVariable("id") Long id) {
         service.deleteStudent(id);
-        return "redirect:/StudentController/ListOfStudents?page=" + page;
+        return "redirect:/StudentController/ListOfStudents";
     }
 
     @GetMapping("/formAddStudent")
@@ -69,7 +69,7 @@ public class StudentController {
     }
 
     @PostMapping("/formAddStudent/new")
-    public String createStudent(@ModelAttribute Student student, Model model) {
+    public String createStudent(@ModelAttribute Student student) {
 
         String phone = student.getPhonenumber();
         String firstname = student.getFirstName();
