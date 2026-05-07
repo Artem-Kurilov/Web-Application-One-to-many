@@ -38,7 +38,7 @@
             <th>Author</th>
             <th>Title</th>
             <th>Quantity</th>
-            <th>Action</th>
+            <th>Open</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -58,7 +58,7 @@
             </td>
 
             <td>
-                <a th:href="@{/BookController/delete/{id}(id=${book.id}, page=${currentPage})}"
+                <a th:href="@{'/BookController/delete/' + ${book.id}}"
                    class="btn btn-danger btn-sm">
                     Delete
                 </a>
@@ -67,19 +67,19 @@
         </tbody>
     </table>
 
-    <nav class="mt-4">
+    <nav class="mt-4" th:if="${totalPages > 1}">
         <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{/BookController/ListOfBooks(page=${currentPage - 1})}">
-                    Previous
+                    &lt;
                 </a>
             </li>
 
             <li class="page-item"
-                th:each="i : ${#numbers.sequence(currentPage, currentPage + 4)}"
-                th:if="${i < totalPages}"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:if="${totalPages <= 10 or i < 5 or i >= totalPages - 5}"
                 th:classappend="${i == currentPage} ? 'active'">
                 <a class="page-link"
                    th:text="${i + 1}"
@@ -88,23 +88,14 @@
             </li>
 
             <li class="page-item disabled"
-                th:if="${currentPage + 5 < totalPages - 5}">
+                th:if="${totalPages > 10 and currentPage < totalPages - 5 and currentPage >= 5}">
                 <span class="page-link">...</span>
-            </li>
-
-            <li class="page-item"
-                th:if="${currentPage + 5 < totalPages - 5}"
-                th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
-                <a class="page-link"
-                   th:text="${i + 1}"
-                   th:href="@{/BookController/ListOfBooks(page=${i})}">
-                </a>
             </li>
 
             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{/BookController/ListOfBooks(page=${currentPage + 1})}">
-                    Next
+                    &gt;
                 </a>
             </li>
 
