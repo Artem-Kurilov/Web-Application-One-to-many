@@ -129,12 +129,17 @@
       <!-- IF TOTAL PAGES > 10 -->
       <th:block th:if="${totalPages > 10}">
 
-        <!-- DYNAMIC LEFT WINDOW -->
+        <!-- DYNAMIC WINDOW -->
         <li class="page-item"
             th:each="i : ${#numbers.sequence(
-              currentPage < 5 ? 0 : currentPage,
-              currentPage < 5 ? 4 : currentPage + 4)}"
-            th:if="${i < totalPages - 5}"
+            currentPage >= totalPages - 10 ? totalPages - 10 :
+            (currentPage < 5 ? 0 : currentPage),
+
+            currentPage >= totalPages - 10 ? totalPages - 6 :
+            (currentPage < 5 ? 4 : currentPage + 4)
+            )}"
+
+            th:if="${i < totalPages - 5 and i <= currentPage + 4}"
             th:classappend="${i == currentPage} ? 'active'">
 
           <a class="page-link"
