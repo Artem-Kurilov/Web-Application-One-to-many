@@ -132,11 +132,11 @@
         <!-- MOVING WINDOW -->
         <li class="page-item"
             th:each="i : ${#numbers.sequence(
-            currentPage > totalPages - 6
+            currentPage >= totalPages - 7
             ? totalPages - 10
             : currentPage,
 
-            currentPage > totalPages - 6
+            currentPage >= totalPages - 7
             ? totalPages - 1
             : currentPage + 4)}"
 
@@ -151,7 +151,7 @@
 
         <!-- DOTS -->
         <li class="page-item disabled"
-            th:if="${currentPage < totalPages - 6}">
+            th:if="${currentPage < totalPages - 7}">
 
           <span class="page-link">...</span>
 
@@ -159,7 +159,7 @@
 
         <!-- LAST 5 -->
         <li class="page-item"
-            th:if="${currentPage < totalPages - 6}"
+            th:if="${currentPage < totalPages - 7}"
             th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
 
           <a class="page-link"
