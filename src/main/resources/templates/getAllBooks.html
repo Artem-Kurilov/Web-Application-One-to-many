@@ -32,6 +32,7 @@
     </div>
 
     <table class="table table-dark table-striped table-hover text-center">
+
         <thead>
         <tr>
             <th>ID</th>
@@ -44,7 +45,9 @@
         </thead>
 
         <tbody>
+
         <tr th:each="book : ${books}">
+
             <td th:text="${book.id}"></td>
             <td th:text="${book.author}"></td>
             <td th:text="${book.title}"></td>
@@ -63,8 +66,11 @@
                     Delete
                 </a>
             </td>
+
         </tr>
+
         </tbody>
+
     </table>
 
     <!-- Pagination -->
@@ -101,17 +107,17 @@
             <!-- IF TOTAL PAGES > 10 -->
             <th:block th:if="${totalPages > 10}">
 
-                <!-- DYNAMIC WINDOW -->
+                <!-- MOVING WINDOW -->
                 <li class="page-item"
                     th:each="i : ${#numbers.sequence(
-                    currentPage >= totalPages - 10 ? totalPages - 10 :
-                    (currentPage < 5 ? 0 : currentPage),
+                    currentPage >= totalPages - 10
+                    ? totalPages - 10
+                    : currentPage,
 
-                    currentPage >= totalPages - 10 ? totalPages - 6 :
-                    (currentPage < 5 ? 4 : currentPage + 4)
-                    )}"
+                    currentPage >= totalPages - 10
+                    ? totalPages - 6
+                    : currentPage + 4)}"
 
-                    th:if="${i < totalPages - 5 and i <= currentPage + 4}"
                     th:classappend="${i == currentPage} ? 'active'">
 
                     <a class="page-link"
@@ -122,14 +128,17 @@
                 </li>
 
                 <!-- DOTS -->
-                <li class="page-item disabled">
+                <li class="page-item disabled"
+                    th:if="${currentPage < totalPages - 10}">
+
                     <span class="page-link">...</span>
+
                 </li>
 
                 <!-- LAST 5 -->
                 <li class="page-item"
-                    th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}"
-                    th:classappend="${i == currentPage} ? 'active'">
+                    th:if="${currentPage < totalPages - 10}"
+                    th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
 
                     <a class="page-link"
                        th:text="${i + 1}"
