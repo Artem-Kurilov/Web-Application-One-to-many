@@ -26,7 +26,8 @@
     </div>
 
     <div class="text-center mb-4">
-        <a th:href="@{/BookController/formAddBook}" class="btn btn-primary btn-sm">
+        <a th:href="@{/BookController/formAddBook}"
+           class="btn btn-primary btn-sm">
             Add new book
         </a>
     </div>
@@ -110,12 +111,12 @@
                 <!-- MOVING WINDOW -->
                 <li class="page-item"
                     th:each="i : ${#numbers.sequence(
-                    currentPage >= totalPages - 10
+                    currentPage > totalPages - 6
                     ? totalPages - 10
                     : currentPage,
 
-                    currentPage >= totalPages - 10
-                    ? totalPages - 6
+                    currentPage > totalPages - 6
+                    ? totalPages - 1
                     : currentPage + 4)}"
 
                     th:classappend="${i == currentPage} ? 'active'">
@@ -129,7 +130,7 @@
 
                 <!-- DOTS -->
                 <li class="page-item disabled"
-                    th:if="${currentPage < totalPages - 10}">
+                    th:if="${currentPage < totalPages - 6}">
 
                     <span class="page-link">...</span>
 
@@ -137,7 +138,7 @@
 
                 <!-- LAST 5 -->
                 <li class="page-item"
-                    th:if="${currentPage < totalPages - 10}"
+                    th:if="${currentPage < totalPages - 6}"
                     th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
 
                     <a class="page-link"
