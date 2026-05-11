@@ -113,7 +113,8 @@
 
 
       <!-- th:block Group the HTML logic,
-                    BUT output nothing to HTML. -->
+                    BUT output nothing to HTML,
+                    I need th:block to implement logic that's why i am using it, without it, i can't use conditional statements and loops. -->
       
       <!-- IF TOTAL PAGES <= 10 -->
       <th:block th:if="${totalPages <= 10}">
