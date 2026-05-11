@@ -40,8 +40,8 @@
             <th>Author</th>
             <th>Title</th>
             <th>Quantity</th>
-            <th>Open</th>
-            <th>Delete</th>
+            <th>Action</th>
+            <th>Action</th>
         </tr>
         </thead>
 
@@ -89,9 +89,20 @@
 
             </li>
 
+
+
+            <!-- th:block Group the HTML logic,
+                 BUT output nothing to HTML,
+                 I need th:block to implement logic that's why i am using it, without it, i can't use conditional statements and loops. -->
+
             <!-- IF TOTAL PAGES <= 10 -->
             <th:block th:if="${totalPages <= 10}">
 
+
+                <!-- classappend is adding css style -->
+
+                <!-- th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                     in java: for(int i = 0; i <= totalPages - 1; i++){ -->
                 <li class="page-item"
                     th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                     th:classappend="${i == currentPage} ? 'active'">
@@ -108,45 +119,63 @@
             <!-- IF TOTAL PAGES > 10 -->
             <th:block th:if="${totalPages > 10}">
 
-                <!-- MOVING WINDOW -->
-                <li class="page-item"
-                    th:each="i : ${#numbers.sequence(
-                    currentPage >= totalPages - 7
-                    ? totalPages - 10
-                    : currentPage,
+                <!--
+                  Если мы еще НЕ дошли до последних 10 страниц:
+                  показываем текущие 5 страниц + ... + последние 5 страниц.
+                  Если уже дошли до последних 10 страниц:
+                  показываем просто последние 10 страниц без троеточия.
+                -->
 
-                    currentPage >= totalPages - 7
-                    ? totalPages - 1
-                    : currentPage + 4)}"
+                <!-- MOVING WINDOW + DOTS + LAST 5 -->
+                <th:block th:if="${currentPage < totalPages - 10}">
 
-                    th:classappend="${i == currentPage} ? 'active'">
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(currentPage, currentPage + 4)}"
+                        th:classappend="${i == currentPage} ? 'active'">
 
-                    <a class="page-link"
-                       th:text="${i + 1}"
-                       th:href="@{/BookController/ListOfBooks(page=${i})}">
-                    </a>
+                        <a class="page-link"
+                           th:text="${i + 1}"
+                           th:href="@{/BookController/ListOfBooks(page=${i})}">
+                        </a>
 
-                </li>
+                    </li>
 
-                <!-- DOTS -->
-                <li class="page-item disabled"
-                    th:if="${currentPage < totalPages - 7}">
+                    <!-- DOTS -->
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
 
-                    <span class="page-link">...</span>
+                    <!-- th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
+                         This ensures that, from where I was standing, there were still 5 pages ahead of me. -->
+                    <!-- LAST 5 -->
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
 
-                </li>
+                        <a class="page-link"
+                           th:text="${i + 1}"
+                           th:href="@{/BookController/ListOfBooks(page=${i})}">
+                        </a>
 
-                <!-- LAST 5 -->
-                <li class="page-item"
-                    th:if="${currentPage < totalPages - 7}"
-                    th:each="i : ${#numbers.sequence(totalPages - 5, totalPages - 1)}">
+                    </li>
 
-                    <a class="page-link"
-                       th:text="${i + 1}"
-                       th:href="@{/BookController/ListOfBooks(page=${i})}">
-                    </a>
+                </th:block>
 
-                </li>
+                <!-- LAST 10 PAGES WITHOUT DOTS -->
+                <th:block th:if="${currentPage >= totalPages - 10}">
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(totalPages - 10, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+
+                        <a class="page-link"
+                           th:text="${i + 1}"
+                           th:href="@{/BookController/ListOfBooks(page=${i})}">
+                        </a>
+
+                    </li>
+
+                </th:block>
 
             </th:block>
 
@@ -165,6 +194,24 @@
     </nav>
 
 </div>
+
+<!-- &gt;   = >
+     &lt;   = <
+     &amp;  = & -->
+
+<!-- '?' and ':'
+The ternary operator works like this:
+condition ? if TRUE : if FALSE -->
+
+<!-- example in java: for(int i = 0; i <= 5; i++) of this code
+            th:each="i : ${#numbers.sequence(0, 5)}" -->
+
+<!-- class="page-link" making button of pagination is beautiful -->
+
+<!-- 'disabled' here
+                    <li class="page-item"
+                    th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+     This means that the pagination button will be inactive.-->
 
 </body>
 </html>
