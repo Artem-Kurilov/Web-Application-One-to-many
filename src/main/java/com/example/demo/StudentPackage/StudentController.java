@@ -29,7 +29,8 @@ public class StudentController {
         //Passing page and pageSize
         Page<Student> studentPage =
                 service.getAllStudents(page, pageSize);
-        
+
+        // Send the students along with their content.
         model.addAttribute("students",
                 studentPage.getContent());
 
