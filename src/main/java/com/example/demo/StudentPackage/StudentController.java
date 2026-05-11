@@ -23,12 +23,13 @@ public class StudentController {
     @GetMapping("/ListOfStudents")
     public String listOfUsers(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int page) {
-
+                              //@RequestParam retrieves the page from the URL.
         int pageSize = 15;
 
+        //Passing page and pageSize
         Page<Student> studentPage =
                 service.getAllStudents(page, pageSize);
-
+        
         model.addAttribute("students",
                 studentPage.getContent());
 
