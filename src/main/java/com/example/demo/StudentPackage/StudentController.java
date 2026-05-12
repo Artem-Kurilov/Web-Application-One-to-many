@@ -106,4 +106,16 @@ public class StudentController {
 
         return "takeBook";
     }
+
+    @PostMapping("/searchPage")
+    public String searchPage(@RequestParam String page) {
+
+        if(!page.matches("\\d+")){
+            return "errorPageNoIntStudent";
+        }
+
+        int pageNumber = Integer.parseInt(page);
+
+        return "redirect:/StudentController/ListOfStudents?page=" + (pageNumber - 1);
+    }
 }
