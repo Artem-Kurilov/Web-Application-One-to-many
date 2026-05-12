@@ -88,4 +88,16 @@ public class BookController {
 
         return "redirect:/BookController/ListOfBooks";
     }
+
+    @PostMapping("/searchPage")
+    public String searchPage(@RequestParam String page) {
+
+        if(!page.matches("\\d+")){
+            return "errorPageNoIntBook";
+        }
+
+        int pageNumber = Integer.parseInt(page);
+
+        return "redirect:/BookController/ListOfBooks?page=" + (pageNumber - 1);
+    }
 }
