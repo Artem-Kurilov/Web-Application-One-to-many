@@ -95,6 +95,28 @@
 
   </table>
 
+  <!-- Page search -->
+  <div class="d-flex justify-content-end mb-3">
+
+    <form th:action="@{/StudentController/searchPage}"
+          method="post"
+          class="d-flex gap-2">
+
+      <input type="text"
+             name="page"
+             class="form-control"
+             placeholder="Page"
+             style="width: 120px;">
+
+      <button type="submit"
+              class="btn btn-dark">
+        Go
+      </button>
+
+    </form>
+
+  </div>
+
   <!-- Pagination -->
   <nav class="mt-4" th:if="${totalPages > 1}">
     <ul class="pagination justify-content-center">
@@ -139,7 +161,7 @@
 
         <!--
           If we have NOT yet reached the last 10 pages:
-          show the current 5 pages + ... + the last 5 pages. 
+          show the current 5 pages + ... + the last 5 pages.
           If we have already reached the last 10 pages:
           simply show the last 10 pages, without the ellipsis.
         -->
