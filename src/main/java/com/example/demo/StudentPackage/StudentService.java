@@ -76,7 +76,7 @@ public class StudentService {
         }
         else{
 
-            pageable = PageRequest.of(page, size);
+            pageable = PageRequest.of(page, size); // PageRequest - what page to load, how many elements need to display for user, how to sort data
 
         }
 
